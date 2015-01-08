@@ -57,7 +57,7 @@
         <h2>todoCount: {{todoCount}}</h2>
         <ul>
         {{#each model}}
-        <li {{bind-attr class=done}}>{{input type="checkbox" checked=done }}{{text}}</li>
+        <li {{bind-attr class=done:done-true}}>{{input type="checkbox" checked=done }}{{text}}</li>
         {{/each}}
         </ul>
         {{#if newTodoText}}

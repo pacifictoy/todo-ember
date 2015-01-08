@@ -56,10 +56,18 @@
     <script type="text/x-handlebars" data-template-name='index'>
         <h2>todoCount: {{todoCount}}</h2>
         <ul>
-        {{#each model}}
-        <li {{bind-attr class=done:done-true}}>{{input type="checkbox" checked=done }}{{text}}</li>
+        {{#each todo in model itemController="todo"}}
+        <li {{bind-attr class=todo.done:done-true}}>
+            {{#if todo.isEditing}}
+                {{textarea value=todo.text focus-out="acceptChanges" insert-newline="acceptChanges"}}
+            {{else}}
+                {{input type="checkbox" checked=todo.done }}<span {{action "editMode" on="doubleClick"}}>{{todo.text}}</span>
+            {{/if}}
+            </li>
         {{/each}}
         </ul>
+        
+        
         {{#if newTodoText}}
             <p class='text-muted'>{{newTodoText}}</p>
         {{/if}}

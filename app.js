@@ -2,9 +2,23 @@ var App = Ember.Application.create({
     LOG_TRANSITIONS: true
 });
 
-App.IndexController = Ember.ArrayController.extend({
-    todoCount: 3, //Ember.computed.alias('model.length'),
+App.TodoController = Ember.ObjectController.extend({
+    isEditing: false,
     
+    actions:{
+        editMode: function(){
+            this.set('isEditing',true);
+        },
+        
+        acceptChanges: function(){
+            this.set('isEditing',false);   
+        }
+    }
+});
+
+App.IndexController = Ember.ArrayController.extend({
+    todoCount: Ember.computed.alias('model.length'),
+
     actions: {
         addTodo: function(inputText){
             console.log("addTodo!");
@@ -12,16 +26,19 @@ App.IndexController = Ember.ArrayController.extend({
             todo.save();
             this.set('newTodoText', '');
         },
-        
+
         clearCompleted: function(){
             console.log('clearCompleted!');
             var completed = this.filterBy('done',true);
             completed.invoke('deleteRecord');
             completed.invoke('save');
-               
+
         }
+
     }
 });
+
+
 
 App.IndexRoute = Ember.Route.extend({
     model: function(){
@@ -38,7 +55,7 @@ App.Todo = DS.Model.extend({
 
 App.Todo.FIXTURES = [
     {
-        id:1, 
+        id:1,
         text: "learn ember.js",
         done: false
     },

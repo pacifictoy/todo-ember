@@ -2,7 +2,7 @@ var App = Ember.Application.create({
     LOG_TRANSITIONS: true
 });
 
-App.IndexController = Ember.Controller.extend({
+App.IndexController = Ember.ArrayController.extend({
     todoCount: 3, //Ember.computed.alias('model.length'),
     
     actions: {
@@ -13,11 +13,11 @@ App.IndexController = Ember.Controller.extend({
             this.set('newTodoText', '');
         },
         
-        //not work yet.... I don't know why....
         clearCompleted: function(){
             console.log('clearCompleted!');
-            var x = this.store.find('todo',{done: true});
-            console.log('hello');
+            var completed = this.filterBy('done',true);
+            completed.invoke('deleteRecord');
+            completed.invoke('save');
                
         }
     }
@@ -25,7 +25,7 @@ App.IndexController = Ember.Controller.extend({
 
 App.IndexRoute = Ember.Route.extend({
     model: function(){
-        return this.store.findAll('todo');
+        return this.store.find('todo');
     }
 });
 
